@@ -27,7 +27,7 @@ If you return RESULT_OK using Activity.setResult(), the AppWidget will">
 http://developer.android.com/reference/android/appwidget/AppWidgetManager.html#ACTION_APPWIDGET_CONFIGURE
 
 If you return RESULT_OK using Activity.setResult(), the AppWidget will">
-<meta property="og:updated_time" content="2016-10-30T06:56:16.000Z">
+<meta property="og:updated_time" content="2016-10-31T01:31:07.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="App Widget Configuration Activity返回值的问题">
 <meta name="twitter:description" content="Android在官方的SDK中有这么一段话
@@ -316,7 +316,7 @@ If you return RESULT_OK using Activity.setResult(), the AppWidget will">
 <p>后来搜索了下，我的解决办法就是：自己发广播！</p>
 <p>PS：</p>
 <p>1.我看了看官方API DEMOS里的那个样例也是没有收到相应的广播，感觉就压根没发送啊。。。</p>
-<p>2.我看这貌似是个BUG，详见<a href="http://code.google.com/p/android/issues/detail?id=2539，很多年前报告过，最近又有人反应RESULT_CANCELED是无法删除Ghost" target="_blank" rel="external">http://code.google.com/p/android/issues/detail?id=2539，很多年前报告过，最近又有人反应RESULT_CANCELED是无法删除Ghost</a> Widget，我试了试，AppWidgetId是会保留，而且在update方法调用时依然是会有该id传入的。。。</p>
+<p>2.我看这貌似是个BUG，详见<a href="http://code.google.com/p/android/issues/detail?id=2539" target="_blank" rel="external">http://code.google.com/p/android/issues/detail?id=2539</a>，很多年前报告过，最近又有人反应RESULT_CANCELED是无法删除Ghost Widget，我试了试，AppWidgetId是会保留，而且在update方法调用时依然是会有该id传入的。。。</p>
 <p>3.这是个存在了5年的bug。。。</p>
 <p>网上有一些变通的方法</p>
 <p><a href="http://www.rinofinazzo.com/blog/2011/12/23/android-phantom-widgets-fix/" target="_blank" rel="external">http://www.rinofinazzo.com/blog/2011/12/23/android-phantom-widgets-fix/</a><br><a href="http://stackoverflow.com/questions/17387191/check-if-a-widget-is-exists-on-homescreen-using-appwidgetid/17387978#17387978" target="_blank" rel="external">http://stackoverflow.com/questions/17387191/check-if-a-widget-is-exists-on-homescreen-using-appwidgetid/17387978#17387978</a></p>
@@ -332,7 +332,7 @@ If you return RESULT_OK using Activity.setResult(), the AppWidget will">
         <p><span>本文标题:</span><a href="/2016/10/30/App-Widget-Configuration-Activity返回值的问题/">App Widget Configuration Activity返回值的问题</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">红色苦瓜</a></p>
         <p><span>发布时间:</span>2016-10-30, 14:44:45</p>
-        <p><span>最后更新:</span>2016-10-30, 14:56:16</p>
+        <p><span>最后更新:</span>2016-10-31, 09:31:07</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2016/10/30/App-Widget-Configuration-Activity返回值的问题/" title="App Widget Configuration Activity返回值的问题">http://consoar.github.io/2016/10/30/App-Widget-Configuration-Activity返回值的问题/</a>
             <span class="copy-path" data-clipboard-text="原文: http://consoar.github.io/2016/10/30/App-Widget-Configuration-Activity返回值的问题/　　作者: 红色苦瓜" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>

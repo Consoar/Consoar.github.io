@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://consoar.github.io/"/>
-  <updated>2016-10-30T06:56:16.000Z</updated>
+  <updated>2016-10-31T01:31:07.000Z</updated>
   <id>http://consoar.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://consoar.github.io/2016/10/30/App-Widget-Configuration-Activity%E8%BF%94%E5%9B%9E%E5%80%BC%E7%9A%84%E9%97%AE%E9%A2%98/"/>
     <id>http://consoar.github.io/2016/10/30/App-Widget-Configuration-Activity返回值的问题/</id>
     <published>2016-10-30T06:44:45.000Z</published>
-    <updated>2016-10-30T06:56:16.000Z</updated>
+    <updated>2016-10-31T01:31:07.000Z</updated>
     
     <content type="html"><![CDATA[<p>Android在官方的SDK中有这么一段话</p>
 <p><a href="http://developer.android.com/reference/android/appwidget/AppWidgetManager.html#ACTION_APPWIDGET_CONFIGURE" target="_blank" rel="external">http://developer.android.com/reference/android/appwidget/AppWidgetManager.html#ACTION_APPWIDGET_CONFIGURE</a></p>
@@ -37,7 +37,7 @@
 <p>后来搜索了下，我的解决办法就是：自己发广播！</p>
 <p>PS：</p>
 <p>1.我看了看官方API DEMOS里的那个样例也是没有收到相应的广播，感觉就压根没发送啊。。。</p>
-<p>2.我看这貌似是个BUG，详见<a href="http://code.google.com/p/android/issues/detail?id=2539，很多年前报告过，最近又有人反应RESULT_CANCELED是无法删除Ghost" target="_blank" rel="external">http://code.google.com/p/android/issues/detail?id=2539，很多年前报告过，最近又有人反应RESULT_CANCELED是无法删除Ghost</a> Widget，我试了试，AppWidgetId是会保留，而且在update方法调用时依然是会有该id传入的。。。</p>
+<p>2.我看这貌似是个BUG，详见<a href="http://code.google.com/p/android/issues/detail?id=2539" target="_blank" rel="external">http://code.google.com/p/android/issues/detail?id=2539</a>，很多年前报告过，最近又有人反应RESULT_CANCELED是无法删除Ghost Widget，我试了试，AppWidgetId是会保留，而且在update方法调用时依然是会有该id传入的。。。</p>
 <p>3.这是个存在了5年的bug。。。</p>
 <p>网上有一些变通的方法</p>
 <p><a href="http://www.rinofinazzo.com/blog/2011/12/23/android-phantom-widgets-fix/" target="_blank" rel="external">http://www.rinofinazzo.com/blog/2011/12/23/android-phantom-widgets-fix/</a><br><a href="http://stackoverflow.com/questions/17387191/check-if-a-widget-is-exists-on-homescreen-using-appwidgetid/17387978#17387978" target="_blank" rel="external">http://stackoverflow.com/questions/17387191/check-if-a-widget-is-exists-on-homescreen-using-appwidgetid/17387978#17387978</a></p>
