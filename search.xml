@@ -4,6 +4,110 @@
   
     
     <entry>
+      <title><![CDATA[LowPloy算法iOS实现]]></title>
+      <url>http://consoar.github.io/2016/10/31/LowPloy-iOS/</url>
+      <content type="html"><![CDATA[<h1 id="0x00概要"><a href="#0x00概要" class="headerlink" title="0x00概要"></a>0x00概要</h1><p>LowPoly算法，顾名思义就是低多边形算法，是通过一些精度比较低的多边形（通常为三角形）去拟合一个图片，给人一种棱角分明，晶格化的艺术效果。</p>
+<p>照例先上一张效果图，大家感受下</p>
+<p>原图：</p>
+<p><img src="http://ww2.sinaimg.cn/large/67218c19gw1f9bf9dvaluj208k05c0uv.jpg" alt=""></p>
+<p>效果图：</p>
+<p><img src="http://ww1.sinaimg.cn/large/67218c19gw1f9bf9d8hsvj20h40aoq5a.jpg" alt=""></p>
+<h1 id="0x01实现"><a href="#0x01实现" class="headerlink" title="0x01实现"></a>0x01实现</h1><p>要将一张普通的图转换成LowPoly风格大致需要以下几步</p>
+<ol>
+<li><p>边缘识别</p>
+</li>
+<li><p>根据识别好的边缘生成一系列顶点</p>
+</li>
+<li><p>把这些生成好的顶点生成一系列三角形</p>
+</li>
+<li><p>填充三角形颜色</p>
+<p>​</p>
+</li>
+</ol>
+<h2 id="边缘识别"><a href="#边缘识别" class="headerlink" title="边缘识别"></a>边缘识别</h2><p>边缘识别算法有很多，例如Sobel，Canny等算法，本文采用是Sobel算法。</p>
+<p>首先来介绍下什么是边缘</p>
+<p>边缘(edge)是指图像局部强度变化最显著的部分。主要存在于目标与目标、目标与背景、区域与区域(包括不同色彩)之间，是图像分割、纹理特征和形状特征等图像分析的重要基础。</p>
+<p>一般来说边缘附近的灰度值都会发生明显的变化。</p>
+<p>因此Sobel算子根据像素点上下、左右邻点灰度加权差，判断是否超过阈值来检测边缘。</p>
+<p>Sobel算子有两个，Gx是横向算子，Gy是纵向算子</p>
+<p><img src="http://ww1.sinaimg.cn/large/67218c19gw1f9bf9dfevaj20cr061dfo.jpg" alt=""></p>
+<p>该算子包含两组3x3的矩阵，分别为横向及纵向，将之与图像作平面卷积，即可分别得出横向及纵向的亮度差分近似值。如果以A代表原始图像，Gx及Gy分别代表经横向及纵向边缘检测的图像灰度值，其公式如下：</p>
+<p><img src="http://ww4.sinaimg.cn/large/67218c19gw1f9bf9d1hbyj204l017q2p.jpg" alt=""></p>
+<p>图像的每一个像素的横向及纵向灰度值通过以下公式结合，来计算该点灰度的大小：</p>
+<p><img src="http://ww1.sinaimg.cn/large/67218c19gw1f9bf9bzonij20e302374h.jpg" alt=""></p>
+<p>通常，为了提高效率 使用不开平方的近似值：</p>
+<p><img src="http://ww4.sinaimg.cn/large/67218c19gw1f9bf9bxgycj204e00w741.jpg" alt=""></p>
+<p>如果梯度G大于某一阀值 则认为该点(x,y)为边缘点。</p>
+<p>一般该阈值可以选所有像素灰度值的平均值。</p>
+<p>核心代码如下</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">double</span> t = <span class="number">0</span>;</div><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt; h; y++) &#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; w; x++) &#123;</div><div class="line">        t = t + getGray(image, x, y);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">t = t/w/h;</div><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt; h; y++) &#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; w; x++) &#123;</div><div class="line">        <span class="keyword">int</span> pixelX = (</div><div class="line">                      (kernelX[<span class="number">0</span>][<span class="number">0</span>] * getGray(image, x - <span class="number">1</span>, y - <span class="number">1</span>)) +</div><div class="line">                      (kernelX[<span class="number">0</span>][<span class="number">1</span>] * getGray(image, x, y - <span class="number">1</span>)) +</div><div class="line">                      (kernelX[<span class="number">0</span>][<span class="number">2</span>] * getGray(image, x + <span class="number">1</span>, y - <span class="number">1</span>)) +</div><div class="line">                      (kernelX[<span class="number">1</span>][<span class="number">0</span>] * getGray(image, x - <span class="number">1</span>, y)) +</div><div class="line">                      (kernelX[<span class="number">1</span>][<span class="number">1</span>] * getGray(image, x, y)) +</div><div class="line">                      (kernelX[<span class="number">1</span>][<span class="number">2</span>] * getGray(image, x + <span class="number">1</span>, y)) +</div><div class="line">                      (kernelX[<span class="number">2</span>][<span class="number">0</span>] * getGray(image, x - <span class="number">1</span>, y + <span class="number">1</span>)) +</div><div class="line">                      (kernelX[<span class="number">2</span>][<span class="number">1</span>] * getGray(image, x, y + <span class="number">1</span>)) +</div><div class="line">                      (kernelX[<span class="number">2</span>][<span class="number">2</span>] * getGray(image, x + <span class="number">1</span>, y + <span class="number">1</span>))</div><div class="line">                      );</div><div class="line">        <span class="keyword">int</span> pixelY = (</div><div class="line">                      (kernelY[<span class="number">0</span>][<span class="number">0</span>] * getGray(image, x - <span class="number">1</span>, y - <span class="number">1</span>)) +</div><div class="line">                      (kernelY[<span class="number">0</span>][<span class="number">1</span>] * getGray(image, x, y - <span class="number">1</span>)) +</div><div class="line">                      (kernelY[<span class="number">0</span>][<span class="number">2</span>] * getGray(image, x + <span class="number">1</span>, y - <span class="number">1</span>)) +</div><div class="line">                      (kernelY[<span class="number">1</span>][<span class="number">0</span>] * getGray(image, x - <span class="number">1</span>, y)) +</div><div class="line">                      (kernelY[<span class="number">1</span>][<span class="number">1</span>] * getGray(image, x, y)) +</div><div class="line">                      (kernelY[<span class="number">1</span>][<span class="number">2</span>] * getGray(image, x + <span class="number">1</span>, y)) +</div><div class="line">                      (kernelY[<span class="number">2</span>][<span class="number">0</span>] * getGray(image, x - <span class="number">1</span>, y + <span class="number">1</span>)) +</div><div class="line">                      (kernelY[<span class="number">2</span>][<span class="number">1</span>] * getGray(image, x, y + <span class="number">1</span>)) +</div><div class="line">                      (kernelY[<span class="number">2</span>][<span class="number">2</span>] * getGray(image, x + <span class="number">1</span>, y + <span class="number">1</span>))</div><div class="line">                      );</div><div class="line">        <span class="keyword">int</span> pixelInfo = ((w * y) + x ) * <span class="number">4</span>; <span class="comment">// 4 bytes per pixel</span></div><div class="line">        <span class="keyword">double</span> G = sqrt((pixelX * pixelX) + (pixelY * pixelY));</div><div class="line">        <span class="keyword">if</span> (G &gt; t) &#123;</div><div class="line">            m_OutPixelBuf[pixelInfo]     = <span class="number">0</span>;</div><div class="line">            m_OutPixelBuf[pixelInfo + <span class="number">1</span>] = <span class="number">0</span>;</div><div class="line">            m_OutPixelBuf[pixelInfo + <span class="number">2</span>] = <span class="number">0</span>;</div><div class="line">            m_OutPixelBuf[pixelInfo + <span class="number">3</span>] = <span class="number">255</span>;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            m_OutPixelBuf[pixelInfo]     = <span class="number">255</span>;</div><div class="line">            m_OutPixelBuf[pixelInfo + <span class="number">1</span>] = <span class="number">255</span>;</div><div class="line">            m_OutPixelBuf[pixelInfo + <span class="number">2</span>] = <span class="number">255</span>;</div><div class="line">            m_OutPixelBuf[pixelInfo + <span class="number">3</span>] = <span class="number">255</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>样例识别出来的边缘如下图</p>
+<p><img src="http://ww3.sinaimg.cn/large/67218c19gw1f9bf9b7yfoj208k05ct8q.jpg" alt=""></p>
+<h2 id="根据识别好的边缘生成一系列顶点"><a href="#根据识别好的边缘生成一系列顶点" class="headerlink" title="根据识别好的边缘生成一系列顶点"></a>根据识别好的边缘生成一系列顶点</h2><p>挑选点比较简单只要将边缘上的点都放入一个集合中就行，但这样有个问题，如果一个图很大的话边缘上的点可能会很多，但既然叫低多边形嘛，那么多点其实也不完全用的到，所以我们可以选取一个系数K，表示随机从边缘点的集合中选取1/K的点用来生成低多边形。这里还有一个问题，图形的四条边通常不会加到这个边缘点的集合里，这样生成出来的图形就看着不像是矩形了，因此我们需要手动将图形的四个顶点加入到该集合中。</p>
+<h2 id="把这些生成好的顶点生成一系列三角形"><a href="#把这些生成好的顶点生成一系列三角形" class="headerlink" title="把这些生成好的顶点生成一系列三角形"></a>把这些生成好的顶点生成一系列三角形</h2><p>根据一系列顶点生成三角形，这里使用的是Delaunay三角剖分算法。<br>先简单介绍下Delaunay三角剖分：<br>Delaunay三角剖分是1934年发明的将空间点连接为三角形，使得所有三角形中最小角最大的一个技术。Delaunay三角有下面两个特性</p>
+<p>1）空圆特性。Delaunay 三角网是唯一的（任意四点不能共圆），在 Delaunay 三角形网中任一三角形的外接圆范围内不会有其它点存在。如下图：</p>
+<p><img src="http://ww3.sinaimg.cn/large/67218c19gw1f9bf9b90usj20dw0dwwha.jpg" alt=""></p>
+<p>2）最大化最小角特性。在散点集可能形成的三角剖分中，Delaunay三角剖分所形成的三角形的最小角最大。如下图：</p>
+<p><img src="http://ww2.sinaimg.cn/large/67218c19gw1f9bf9ai79xj20aq049wet.jpg" alt=""></p>
+<p>关于Delaunay三角形算法具体实现有很多种，有翻边算法、逐点插入算法、分割合并算法、Bowyer-Watson算法等。<br>但是逐点插入算法是最简单，也最易实现，也是目前使用最广泛的算法，本文就简单介绍下如何实现该方法。<br>详细步骤大家可以参考<a href="http://www.cnblogs.com/zhiyishou/p/4430017.html" target="_blank" rel="external">http://www.cnblogs.com/zhiyishou/p/4430017.html</a></p>
+<p>伪代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">input: 顶点列表(vertices)　　　　　　　　　　　　　　　　　　　　  　//vertices为外部生成的随机或乱序顶点列表</div><div class="line">output:已确定的三角形列表(triangles)</div><div class="line">　　　　初始化顶点列表</div><div class="line">　　　　创建索引列表(indices = new Array(vertices.length))　　　　//indices数组中的值为0,1,2,3,......,vertices.length-1</div><div class="line">　　　　基于vertices中的顶点x坐标对indices进行sort　　  　　　　　  //sort后的indices值顺序为顶点坐标x从小到大排序（也可对y坐标，本例中针对x坐标）</div><div class="line">　　　　确定超级三角形</div><div class="line">　　　　将超级三角形保存至未确定三角形列表（temp triangles）</div><div class="line">　　　　将超级三角形push到triangles列表</div><div class="line">　　　　遍历基于indices顺序的vertices中每一个点　　　　　　　　　  　//基于indices后，则顶点则是由x从小到大出现</div><div class="line">　　　　　　初始化边缓存数组（edge buffer）</div><div class="line">　　　　　　遍历temp triangles中的每一个三角形</div><div class="line">　　　　　　　　计算该三角形的圆心和半径</div><div class="line">　　　　　　　　如果该点在外接圆的右侧</div><div class="line">　　　　　　　　　　则该三角形为Delaunay三角形，保存到triangles</div><div class="line">　　　　　　　　　　并在temp里去除掉</div><div class="line">　　　　　　　　　　跳过</div><div class="line">　　　　　　　　如果该点在外接圆外（即也不是外接圆右侧）</div><div class="line">　　　　　　　　　　则该三角形为不确定        　　　　　　　　　     //后面会在问题中讨论</div><div class="line">　　　　　　　　　　跳过</div><div class="line">　　　　　　　　如果该点在外接圆内</div><div class="line">　　　　　　　　　　则该三角形不为Delaunay三角形</div><div class="line">　　　　　　　　　　将三边保存至edge buffer</div><div class="line">　　　　　　　　　　在temp中去除掉该三角形</div><div class="line">　　　　　　对edge buffer进行去重</div><div class="line">　　　　　　将edge buffer中的边与当前的点进行组合成若干三角形并保存至temp triangles中</div><div class="line">　　　　将triangles与temp triangles进行合并</div><div class="line">　　　　除去与超级三角形有关的三角形</div><div class="line">end</div></pre></td></tr></table></figure>
+<p> 下面摘抄了一些关键步骤：</p>
+<p>大多数同学看过伪代码后还是一头雾水，所以用图来解释这个过程，我们先用三点来做实例：</p>
+<p><img src="http://ww3.sinaimg.cn/large/67218c19gw1f9bf9al9urj20sg0sgq38.jpg" alt=""></p>
+<p>如图，随机的三个点</p>
+<p> <img src="http://ww1.sinaimg.cn/large/67218c19gw1f9bf99lcbvj20lo0gwdg1.jpg" alt=""></p>
+<p>根据离散点的最大分布来求得随机一个超级三角形（超级三角形意味着该三角形包含了点集中所有的点）</p>
+<p>我的方法是根据相似三角形定理求得与矩形一半的小矩形的对角三角形，扩大一倍后则扩大后的直角三角形斜边经过点(Xmax,Ymin)</p>
+<p>但是为了将所有的点包含在超级三角形内，在右下角对该三角形的顶点进行了横和高的扩展，并要保证这个扩展三角形底大于高，才能实现包含</p>
+<p>这样求得的超级三角形不会特别大使得计算复杂，而且过程也简单，并将超级三角形放入temp triangles中</p>
+<p><img src="http://ww4.sinaimg.cn/mw690/67218c19gw1f9bf994hrtj20sg0sgq44.jpg" alt=""></p>
+<p>代码如下：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">NSArray</span> * supertriangle(<span class="built_in">NSArray</span> *vertices) &#123;</div><div class="line">	<span class="keyword">int</span> xmin = INT_MAX;</div><div class="line">	<span class="keyword">int</span> ymin = INT_MAX;</div><div class="line">	<span class="keyword">int</span> xmax = INT_MIN;</div><div class="line">	<span class="keyword">int</span> ymax = INT_MIN;</div><div class="line">	<span class="keyword">float</span> dx, dy, dmax, xmid, ymid;</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = vertices.count - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</div><div class="line">	    <span class="built_in">CGPoint</span> p = [vertices[i] <span class="built_in">CGPointValue</span>];</div><div class="line">	    <span class="keyword">if</span> (p.x &lt; xmin) xmin = p.x ;</div><div class="line">	    <span class="keyword">if</span> (p.x &gt; xmax) xmax = p.x ;</div><div class="line">	    <span class="keyword">if</span> (p.y &lt; ymin) ymin = p.y;</div><div class="line">	    <span class="keyword">if</span> (p.y &gt; ymax) ymax = p.y;</div><div class="line">	&#125;</div><div class="line">	dx = xmax - xmin;</div><div class="line">	dy = ymax - ymin;</div><div class="line">	dmax = dx&gt;dy?dx:dy;</div><div class="line">	xmid = (xmin + dx * <span class="number">0.5</span>f);</div><div class="line">	ymid = (ymin + dy * <span class="number">0.5</span>f);</div><div class="line">	<span class="built_in">NSMutableArray</span> *result = [<span class="built_in">NSMutableArray</span> array];</div><div class="line">	[result addObject:[<span class="built_in">NSValue</span> valueWithCGPoint:<span class="built_in">CGPointMake</span>((<span class="keyword">int</span>) (xmid - <span class="number">20</span> * dmax), (<span class="keyword">int</span>) (ymid - dmax))]];</div><div class="line">	[result addObject:[<span class="built_in">NSValue</span> valueWithCGPoint:<span class="built_in">CGPointMake</span>((<span class="keyword">int</span>) xmid, (<span class="keyword">int</span>) (ymid + <span class="number">20</span> * dmax))]];</div><div class="line">	[result addObject:[<span class="built_in">NSValue</span> valueWithCGPoint:<span class="built_in">CGPointMake</span>((<span class="keyword">int</span>) (xmid + <span class="number">20</span> * dmax), (<span class="keyword">int</span>) (ymid - dmax))]];</div><div class="line">	<span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其实上面这个代码求出来的是个倒着的超级三角形，不过并不影响我们的后续计算。代码的核心思想其实很简单，找到包含所有点矩形的中心点，然后从中心点扩散一个dmax大小的三角形。dmax取dx和dy中的大着，确保能包括住所有点。</p>
+<p>接下来就像是伪代码中描述的那样，对temp triangle中的的三角形遍历画外接圆，这时先对左边的第一个点进行判断，其在圆内</p>
+<p>外接圆的计算：</p>
+<p>外接圆的圆心是三角形三条边的垂直平分线的交点，因此我们只需求的两边的垂直平分线的斜截式y=kx+b，联立方程组求解即可。</p>
+<p>所以该三角形不为Delaunay三角形，将其三边保存至edge buffer中，temp triangle中删除该三角形</p>
+<p><img src="http://ww3.sinaimg.cn/mw690/67218c19gw1f9bf98xnvpj20lo0gwdg1.jpg" alt=""></p>
+<p>将该点与edge buffer中的每一个边相连，组成三个三角形，加入到temp triangles中</p>
+<p><img src="http://ww3.sinaimg.cn/large/67218c19gw1f9bf98q4rfj20lo0gwjsa.jpg" alt=""></p>
+<p>再将重复对temp triangles的遍历并画外接圆，这时使用的是第二个点来进行判断</p>
+<ol>
+<li>该点在三角形1外接圆右侧，则表示左侧三角形为Delaunay三角形，将该三角形保存至triangles中</li>
+<li>该点在三角形2外接圆外侧，为不确定三角形，所以跳过（后面会讲到为什么要跳过该三角形），但并不在temp triangles中删除</li>
+<li>该点在三角形3外接圆内侧，则这时向清空后的edge buffer加入该三角形的三条边，并用该点写edge buffer中的三角边进行组合，组合成了三个三角形并加入到temp triangles中</li>
+</ol>
+<p><img src="http://ww4.sinaimg.cn/mw690/67218c19gw1f9bf97zrz3j20lo0gwmy8.jpg" alt=""></p>
+<p>再次对temp triangles进行遍历，这里该数组里则含有四个三角形，一个是上次检查跳过的含有第一个点的三角形和新根据第二个点生成的三个三角形</p>
+<ol>
+<li>该点在三角形1外接圆右侧，则该三角形为Delaunay三角形，保存至triangles中，并在temp triangles中删除</li>
+<li>该点在三角形2外接圆外侧，跳过</li>
+<li>该点在三角形3外接圆内侧，将该三边保存至temp buffer中，并在temp triangles中删除</li>
+<li>该点在三角形4外接圆内侧，将该三边保存至temp buffer中，并在temp triangles中删除</li>
+</ol>
+<p>这时，temp buffer 中有六条边，triangles中有两个三角形，temp triangles中有1个三角形</p>
+<p>对temp buffer中的六条边进行去重，得到五条边，将该点与这五条边组合成五个三角形并加入到temp triagnles 中，这时temp triangles中有6个三角形</p>
+<p><img src="http://ww3.sinaimg.cn/mw690/67218c19gw1f9bf97kpk8j20lo0gwmyb.jpg" alt=""></p>
+<p>由于三个点已经遍历结束，到了不会再对第三个点形成的三角形做外接圆，这时则将triangles与temp trianlges合并，合并后的数组表示包含已经确定的Delaunay三角形和剩下的三角形</p>
+<p>这时除去合并后数组中的和超级三角形三个点有关的所有三角形，即进行数组坐标的限定，则得到了最后的结果：</p>
+<p><img src="http://ww2.sinaimg.cn/mw690/67218c19gw1f9bf97l018j20lo0gw746.jpg" alt=""></p>
+<p>但为什么只有点在外接圆右侧的点我们才这个三角形是Delaunay三角形呢？<br>因为我们是按X的坐标从小到大排序的，如果该点在外接圆的右侧，则该点以后所有的点都会在外接园外了。<br>但如果不是右侧只是外侧的话</p>
+<p><img src="http://ww2.sinaimg.cn/mw690/67218c19gw1f9bf975r3lj20lo0gwaae.jpg" alt=""></p>
+<p>会出现如上图的情况，点1在外侧但仍然有点2在外接圆内。</p>
+<p>样例连完三角形未填充颜色是时的效果图如下图</p>
+<p><img src="http://ww1.sinaimg.cn/mw690/67218c19gw1f9bf96bjgsj20h40ao77p.jpg" alt=""></p>
+<h2 id="填充三角形颜色"><a href="#填充三角形颜色" class="headerlink" title="填充三角形颜色"></a>填充三角形颜色</h2><p>填充三角形颜色比较简单，我们只需选取原图该三角形中心点的颜色填充该三角形即可。</p>
+<h1 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h1><p>1）由于我们选取的都是边缘上的点可能会造成边缘里的一些细节丢失，我们可以适当选取一些非边缘的点加入到顶点集合中<br>2）因为我们对图片边缘的处理只取了四个顶点，采样不够多生成的图形靠近边缘的地方三角形会比较大效果不太好，可以多取一些边缘上的点<br>3）选取边缘点的时候也不一定要完全随机，可以根据边缘点的密集程度选取，在边缘密集的地方多选取一些点。<br>4）三角形的颜色可以根据不同的三角形根据一些权重选取不同的颜色取样点</p>
+<h1 id="参考附录"><a href="#参考附录" class="headerlink" title="参考附录"></a>参考附录</h1><p><a href="https://www.zhihu.com/question/29856775?sort=created" target="_blank" rel="external">https://www.zhihu.com/question/29856775?sort=created</a></p>
+<p><a href="https://www.zhihu.com/question/20875750" target="_blank" rel="external">https://www.zhihu.com/question/20875750</a></p>
+<p><a href="https://zh.wikipedia.org/wiki/%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B" target="_blank" rel="external">https://zh.wikipedia.org/wiki/%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B</a></p>
+<p><a href="http://blog.csdn.net/tianhai110/article/details/5663756" target="_blank" rel="external">http://blog.csdn.net/tianhai110/article/details/5663756</a></p>
+<p><a href="http://www.cnblogs.com/zhiyishou/p/4430017.html" target="_blank" rel="external">http://www.cnblogs.com/zhiyishou/p/4430017.html</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[App Widget Configuration Activity返回值的问题]]></title>
       <url>http://consoar.github.io/2016/10/30/App-Widget-Configuration-Activity%E8%BF%94%E5%9B%9E%E5%80%BC%E7%9A%84%E9%97%AE%E9%A2%98/</url>
       <content type="html"><![CDATA[<p>Android在官方的SDK中有这么一段话</p>
