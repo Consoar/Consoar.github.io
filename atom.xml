@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://consoar.github.io/"/>
-  <updated>2016-11-01T05:04:53.000Z</updated>
+  <updated>2016-11-01T05:19:15.000Z</updated>
   <id>http://consoar.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://consoar.github.io/2016/10/31/LowPloy-iOS/"/>
     <id>http://consoar.github.io/2016/10/31/LowPloy-iOS/</id>
     <published>2016-10-31T06:15:23.000Z</published>
-    <updated>2016-11-01T05:04:53.000Z</updated>
+    <updated>2016-11-01T05:19:15.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="0x00概要"><a href="#0x00概要" class="headerlink" title="0x00概要"></a>0x00概要</h1><p>LowPoly算法，顾名思义就是低多边形算法，是通过一些精度比较低的多边形（通常为三角形）去拟合一个图片，给人一种棱角分明，晶格化的艺术效果。</p>
 <p>照例先上一张效果图，大家感受下</p>
@@ -120,6 +120,7 @@
 <p><a href="https://zh.wikipedia.org/wiki/%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B" target="_blank" rel="external">https://zh.wikipedia.org/wiki/%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B</a></p>
 <p><a href="http://blog.csdn.net/tianhai110/article/details/5663756" target="_blank" rel="external">http://blog.csdn.net/tianhai110/article/details/5663756</a></p>
 <p><a href="http://www.cnblogs.com/zhiyishou/p/4430017.html" target="_blank" rel="external">http://www.cnblogs.com/zhiyishou/p/4430017.html</a></p>
+<h1 id="Demo地址"><a href="#Demo地址" class="headerlink" title="Demo地址"></a>Demo地址</h1><p>最后当然要送上Demo地址啦<a href="https://github.com/Consoar/LowPoly" target="_blank" rel="external">https://github.com/Consoar/LowPoly</a></p>
 ]]></content>
     
     <summary type="html">

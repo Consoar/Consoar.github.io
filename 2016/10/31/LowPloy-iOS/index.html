@@ -76,7 +76,7 @@
 <meta property="og:image" content="http://ww2.sinaimg.cn/mw690/67218c19gw1f9bf97l018j20lo0gw746.jpg">
 <meta property="og:image" content="http://ww2.sinaimg.cn/mw690/67218c19gw1f9bf975r3lj20lo0gwaae.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/mw690/67218c19gw1f9bf96bjgsj20h40ao77p.jpg">
-<meta property="og:updated_time" content="2016-11-01T05:04:53.000Z">
+<meta property="og:updated_time" content="2016-11-01T05:19:15.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LowPloy算法iOS实现">
 <meta name="twitter:description" content="0x00概要LowPoly算法，顾名思义就是低多边形算法，是通过一些精度比较低的多边形（通常为三角形）去拟合一个图片，给人一种棱角分明，晶格化的艺术效果。
@@ -464,6 +464,7 @@
 <p><a href="https://zh.wikipedia.org/wiki/%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B" target="_blank" rel="external">https://zh.wikipedia.org/wiki/%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B</a></p>
 <p><a href="http://blog.csdn.net/tianhai110/article/details/5663756" target="_blank" rel="external">http://blog.csdn.net/tianhai110/article/details/5663756</a></p>
 <p><a href="http://www.cnblogs.com/zhiyishou/p/4430017.html" target="_blank" rel="external">http://www.cnblogs.com/zhiyishou/p/4430017.html</a></p>
+<h1 id="Demo地址"><a href="#Demo地址" class="headerlink" title="Demo地址"></a>Demo地址</h1><p>最后当然要送上Demo地址啦<a href="https://github.com/Consoar/LowPoly" target="_blank" rel="external">https://github.com/Consoar/LowPoly</a></p>
 
       
     </div>
@@ -475,7 +476,7 @@
         <p><span>Title:</span><a href="/2016/10/31/LowPloy-iOS/">LowPloy算法iOS实现</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage">红色苦瓜</a></p>
         <p><span>Created:</span>2016-10-31, 14:15:23</p>
-        <p><span>Updated:</span>2016-11-01, 13:04:53</p>
+        <p><span>Updated:</span>2016-11-01, 13:19:15</p>
         <p>
             <span>Full URL:</span><a class="post-url" href="/2016/10/31/LowPloy-iOS/" title="LowPloy算法iOS实现">http://consoar.github.io/2016/10/31/LowPloy-iOS/</a>
             <span class="copy-path" data-clipboard-text="From http://consoar.github.io/2016/10/31/LowPloy-iOS/　　By 红色苦瓜" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
@@ -505,7 +506,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0x00概要"><span class="toc-number">1.</span> <span class="toc-text">0x00概要</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x01实现"><span class="toc-number">2.</span> <span class="toc-text">0x01实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#边缘识别"><span class="toc-number">2.1.</span> <span class="toc-text">边缘识别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#根据识别好的边缘生成一系列顶点"><span class="toc-number">2.2.</span> <span class="toc-text">根据识别好的边缘生成一系列顶点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#把这些生成好的顶点生成一系列三角形"><span class="toc-number">2.3.</span> <span class="toc-text">把这些生成好的顶点生成一系列三角形</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#填充三角形颜色"><span class="toc-number">2.4.</span> <span class="toc-text">填充三角形颜色</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#优化"><span class="toc-number">3.</span> <span class="toc-text">优化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考附录"><span class="toc-number">4.</span> <span class="toc-text">参考附录</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0x00概要"><span class="toc-number">1.</span> <span class="toc-text">0x00概要</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x01实现"><span class="toc-number">2.</span> <span class="toc-text">0x01实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#边缘识别"><span class="toc-number">2.1.</span> <span class="toc-text">边缘识别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#根据识别好的边缘生成一系列顶点"><span class="toc-number">2.2.</span> <span class="toc-text">根据识别好的边缘生成一系列顶点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#把这些生成好的顶点生成一系列三角形"><span class="toc-number">2.3.</span> <span class="toc-text">把这些生成好的顶点生成一系列三角形</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#填充三角形颜色"><span class="toc-number">2.4.</span> <span class="toc-text">填充三角形颜色</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#优化"><span class="toc-number">3.</span> <span class="toc-text">优化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考附录"><span class="toc-number">4.</span> <span class="toc-text">参考附录</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Demo地址"><span class="toc-number">5.</span> <span class="toc-text">Demo地址</span></a></li></ol>
         
     </div>
     <style>
