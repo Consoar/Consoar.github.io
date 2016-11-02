@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://consoar.github.io/"/>
-  <updated>2016-11-01T05:19:15.000Z</updated>
+  <updated>2016-11-02T11:57:05.000Z</updated>
   <id>http://consoar.github.io/</id>
   
   <author>
@@ -16,11 +16,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>LowPloy算法iOS实现</title>
-    <link href="http://consoar.github.io/2016/10/31/LowPloy-iOS/"/>
-    <id>http://consoar.github.io/2016/10/31/LowPloy-iOS/</id>
+    <title>LowPoly算法iOS实现</title>
+    <link href="http://consoar.github.io/2016/10/31/LowPoly-iOS/"/>
+    <id>http://consoar.github.io/2016/10/31/LowPoly-iOS/</id>
     <published>2016-10-31T06:15:23.000Z</published>
-    <updated>2016-11-01T05:19:15.000Z</updated>
+    <updated>2016-11-02T11:57:05.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="0x00概要"><a href="#0x00概要" class="headerlink" title="0x00概要"></a>0x00概要</h1><p>LowPoly算法，顾名思义就是低多边形算法，是通过一些精度比较低的多边形（通常为三角形）去拟合一个图片，给人一种棱角分明，晶格化的艺术效果。</p>
 <p>照例先上一张效果图，大家感受下</p>

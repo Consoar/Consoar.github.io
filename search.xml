@@ -4,8 +4,8 @@
   
     
     <entry>
-      <title><![CDATA[LowPloy算法iOS实现]]></title>
-      <url>http://consoar.github.io/2016/10/31/LowPloy-iOS/</url>
+      <title><![CDATA[LowPoly算法iOS实现]]></title>
+      <url>http://consoar.github.io/2016/10/31/LowPoly-iOS/</url>
       <content type="html"><![CDATA[<h1 id="0x00概要"><a href="#0x00概要" class="headerlink" title="0x00概要"></a>0x00概要</h1><p>LowPoly算法，顾名思义就是低多边形算法，是通过一些精度比较低的多边形（通常为三角形）去拟合一个图片，给人一种棱角分明，晶格化的艺术效果。</p>
 <p>照例先上一张效果图，大家感受下</p>
 <p>原图：</p>
